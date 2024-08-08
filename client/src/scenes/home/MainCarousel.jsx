@@ -1,3 +1,4 @@
+// TODO: Replace with a hero image for now
 import { Box, Typography, IconButton, useMediaQuery } from '@mui/material';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -13,7 +14,7 @@ const importAll = (r) =>
   }, {});
 
 export const heroTextureImports = importAll(
-  require.context('../../assets', false, /\.(png|jpeg?|svg)$/)
+  require.context('../../assets', false, /\.(png|jpe?g|svg)$/)
 );
 
 const MainCarousel = () => {
@@ -22,7 +23,7 @@ const MainCarousel = () => {
   return (
     <Carousel
       infiniteLoop={true}
-      showThumb={false}
+      showThumbs={false}
       showIndicators={false}
       showStatus={false}
       renderArrowPrev={(onClickHandler, hasPrev, label) => (
@@ -62,9 +63,9 @@ const MainCarousel = () => {
             src={texture}
             alt={`carousel-${index}`}
             style={{
-              width: '100%',
-              height: '100%',
-              ojectFit: 'cover',
+              width: '40%',
+              height: 'auto',
+              objectFit: 'cover',
               backgroundAttachment: 'fixed'
             }}
           />
@@ -80,7 +81,7 @@ const MainCarousel = () => {
             margin={isNonMobile ? undefined : '0 auto'}
             maxWidth={isNonMobile ? undefined : '240px'}
           >
-            <Typography color={shades.secondary[200]}>--NEW ITEMS</Typography>
+            <Typography color={shades.secondary[200]}>-- NEW ITEMS</Typography>
             <Typography variant='h1'>Summer Sale</Typography>
             <Typography
               fontWeight='bold'
