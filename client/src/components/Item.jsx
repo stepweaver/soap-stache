@@ -13,23 +13,17 @@ const Item = ({ item, width }) => {
   const [count, setCount] = useState(1);
   const [isHovered, setIsHovered] = useState(false);
   const {
-    pallette: { neutral }
+    palette: { neutral }
   } = useTheme();
 
-  const { category, name, price, image } = item.attributes;
-  const {
-    data: {
-      attributes: {
-        formats: {
-          medium: { url }
-        }
-      }
-    }
-  } = image;
+  const { category, price, name, image } = item.attributes;
+  const imageUrl = image.data[0].attributes.formats.medium.url;
 
   return (
     <Box width={width}>
       <Box
+        display='flex'
+        justifyContent='center'
         position='relative'
         onMouseOver={() => setIsHovered(true)}
         onMouseOut={() => setIsHovered(false)}
@@ -38,12 +32,18 @@ const Item = ({ item, width }) => {
           alt={item.name}
           width='300px'
           height='400px'
-          src={`http://localhost:1337${url}`}
+          src={`http://localhost:1337${imageUrl}`}
           onClick={() => navigate(`/item/${item.id}`)}
-          style={{ cursor: 'pointer' }}
+          style={{
+            cursor: 'pointer',
+            borderRadius: '3px',
+            objectFit: 'cover',
+            width: '100%',
+            height: '100%'
+          }}
         />
         <Box
-          display={isHovered ? 'blocked' : 'none'}
+          display={isHovered ? 'block' : 'none'}
           position='absolute'
           bottom='10%'
           left='0'
@@ -51,7 +51,6 @@ const Item = ({ item, width }) => {
           padding='0 5%'
         >
           <Box display='flex' justifyContent='space-between'>
-
             {/* AMOUNT */}
             <Box
               display='flex'
@@ -63,9 +62,7 @@ const Item = ({ item, width }) => {
                 <RemoveIcon />
               </IconButton>
               <Typography color={shades.primary[300]}>{count}</Typography>
-              <IconButton
-                onClick={() => setCount(count + 1)}
-              >
+              <IconButton onClick={() => setCount(count + 1)}>
                 <AddIcon />
               </IconButton>
             </Box>
@@ -75,9 +72,7 @@ const Item = ({ item, width }) => {
               onClick={() => {
                 dispatch(addToCart({ item: { ...item, count } }));
               }}
-              sx={{
-                backgroundColor: shades.primary[300], color: 'white'
-              }}
+              sx={{ backgroundColor: shades.primary[300], color: 'white' }}
             >
               Add to Cart
             </Button>
@@ -87,7 +82,8 @@ const Item = ({ item, width }) => {
 
       <Box mt='3px'>
         <Typography variant='subtitle2' color={neutral.dark}>
-          {category.replace(/([A-Z])/g, ' $1')
+          {category
+            .replace(/([A-Z])/g, ' $1')
             .replace(/^./, (str) => str.toUpperCase())}
         </Typography>
         <Typography>{name}</Typography>
